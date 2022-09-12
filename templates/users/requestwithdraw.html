@@ -2,6 +2,9 @@
 {% load static %}
 
 {% load crispy_forms_tags %}
+{% block title %}
+payment request
+{% endblock %}
 {% block css %}
 
 #comm{
@@ -11,33 +14,73 @@
     font-size:15px;
     }
 
+        #snackbar {
+          visibility: hidden;
+          min-width: 250px;
+          margin-left: -125px;
+          background-color: green;
+          color: #fff;
+          border-radius:10px;
+          text-align: center;
+          padding: 16px;
+          position: fixed;
+          z-index: 1;
+          left: 80%;
+          top: 30px;
+          font-size: 17px;
+        }
 
+        #snackbar.show {
+          visibility: visible;
+          -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+          animation: fadein 0.5s, fadeout 0.5s 2.5s;
+        }
 
-{% endblock %}
+        @-webkit-keyframes fadein {
+          from {top: 0; opacity: 0;}
+          to {top: 30px; opacity: 1;}
+        }
 
-{% block title %}
-payment request
+        @keyframes fadein {
+          from {top: 0; opacity: 0;}
+          to {top: 30px; opacity: 1;}
+        }
+
+        @-webkit-keyframes fadeout {
+          from {top: 30px; opacity: 1;}
+          to {top: 0; opacity: 0;}
+        }
+
+        @keyframes fadeout {
+          from {top: 30px; opacity: 1;}
+          to {top: 0; opacity: 0;}
+        }
+    .file {
+      visibility: hidden;
+      position: absolute;
+    }
+    .error{
+    color:red;
+    }
 {% endblock %}
 
 {% block content %}
 
 
 <div class="col-md-12 col-lg-8" style="margin: 0 auto;">
-                <div class="card text-center">
-                {% if messages %}
-                                    <ul class="messages">
-                                        {% for message in messages %}
-                                            <div class="alert alert-info col-sm-12">
-                                        <button type="button" aria-hidden="true" class="close" data-dismiss="alert">
-                                            <i class="nc-icon nc-simple-remove"></i>
-                                        </button>
-                                        <span>{{ message }}</span>
-                                    </div>
-                                        {% endfor %}
-                                    </ul>
-                                    {% endif %}
+ <div class="card text-center">
+                 {% for message in messages %}
+                       {% if message %}
+                       <div id="snackbar" class="alert alert-success">{{ message }}</div>
+                           <script>
+                               var x = document.getElementById("snackbar");
+                               x.className = "show";
+                               setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
+                           </script>
+                       {% endif %}
+                 {% endfor %}
   <div class="card-header" style="margin-top: 1%">
-      <h5 class="card-title"> <h2 class="text-success text-center">Hi!  {{ request.user.full_name }} </h2></h5>
+      <h5 class="card-title"> <h2 class="text-success text-center">Hi!  {{ request.user.username }} </h2></h5>
   </div>
   <div class="card-body">
 
@@ -59,6 +102,7 @@ payment request
       </div>
       <div  class="modal-body">
         <form name="myForm" method="post" action="" onsubmit="return validateForm();" >{% csrf_token %}
+            <p class="text-center">you will be charge 10% from your withdrawal amount</p>
           <div class="form-group">
             <label for="recipient-name" class="col-form-label">Paypal Account:</label>
             <input type="text" placeholder="Enter your paypal account gmail" class="form-control" id="recipient-name" name="paypal">

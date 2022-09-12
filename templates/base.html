@@ -105,7 +105,6 @@
                                     <ul>
                                         {% if request.user.is_authenticated %}
                                         <li><i class="fa fa-sign-out"></i><a href="{% url 'logout' %}">Log Out</a></li>
-                                        <li><i class="fa fa-user"></i><a href="{% url 'dashboard' %}">Dashboard</a></li>
                                         {% else %}
                                         <li><i class="fa fa-key"></i><a href="{% url 'login' %}">Login</a></li>
                                         <li><i class="fa fa-user"></i><a href="{% url 'signup' %}">Registration</a></li>
